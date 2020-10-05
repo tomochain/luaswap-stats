@@ -42,14 +42,14 @@ const useStyles = makeStyles(() => ({
 
 const TABLE_COL_WIDTH = [300, 150, 200, 200, 90, 90];
 
-const PoolRow = ({ row, key }) => {
+const PoolRow = ({ row }) => {
   const classes = useStyles();
   const currentBal = row.balance || 0;
   const yesterdayBal = _get(row, "history.dayAgo.balance", 1);
   const balanceChangeRate = (currentBal / yesterdayBal) * 100 - 100;
 
   return (
-    <TableRow key={key}>
+    <TableRow>
       <TableCell className={classes.tableCell}>
         <Box display="flex" alignItems="stretch">
           <Typography style={{ marginRight: 20, fontSize: 32 }}>

@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { Box } from "@material-ui/core";
 import CommonStatistics from "../components/CommonStatistics";
 import PoolTable from "../components/PoolTable";
+import { LUA } from "../utils/tokenData";
 
 const Dashboard = () => {
   return (

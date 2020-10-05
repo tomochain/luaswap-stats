@@ -71,7 +71,7 @@ const CardItem = ({ imgSrc, title, valueContainer, descriptionContainer }) => {
           <Grid
             container
             direction="column"
-            spacing={0.5}
+            spacing={1}
             style={{ width: "calc(100% - 100px)" }}
           >
             <Grid item className={classes.cardTitle}>

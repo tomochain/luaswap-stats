@@ -6,18 +6,18 @@ import {
   Tabs,
   IconButton,
   Tab,
-  makeStyles,
+  // makeStyles,
 } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
 import { ROUTE } from "../constants";
 
 const MENU_TAB = [ROUTE.HOMEPAGE];
 
-const useStyles = makeStyles(() => ({}));
+// const useStyles = makeStyles(() => ({}));
 
 const Navbar = ({ location }) => {
   const [tabValue, setTabValue] = useState(0);
-  const classes = useStyles();
+  // const classes = useStyles();
 
   const handleChangeTab = (_, newValue) => {
     setTabValue(newValue);
@@ -26,7 +26,6 @@ const Navbar = ({ location }) => {
   useEffect(() => {
     if (location.pathname) {
       const chosenTabId = MENU_TAB.indexOf(location.pathname);
-      console.log("change url", location.pathname, chosenTabId);
       if (chosenTabId !== tabValue) {
         setTabValue(chosenTabId);
       }
@@ -40,9 +39,7 @@ const Navbar = ({ location }) => {
           <MenuIcon />
         </IconButton>
         <Tabs value={tabValue} onChange={handleChangeTab} aria-label="App menu">
-          <Tab id="app-menu-tab-0" label="Dashboard" aria-label="Dashboard">
-            Dashboard
-          </Tab>
+          <Tab id="app-menu-tab-0" label="Dashboard" aria-label="Dashboard" />
         </Tabs>
       </Toolbar>
     </AppBar>
