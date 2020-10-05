@@ -1,0 +1,161 @@
+[
+  {
+    "id": 0,
+    "name": "Lua Party",
+    "icon": "\ud83c\udf63",
+    "company": "LuaSwap",
+    "swapId": "LUA-TOMOE SLP",
+    "swapPair": {
+      "id": "0x795065dcc9f64b5614c407a6efdc400da6221fb0",
+      "name": "LUA/TOMOE",
+      "token0": {
+        "id": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+        "symbol": "LUA",
+        "decimal": 18
+      },
+      "token1": {
+        "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "symbol": "TOMOE",
+        "decimal": 18
+      },
+      "reserve0": "19491118.735987406174229491",
+      "reserve1": "69552.703829726192303749",
+      "totalSupply": "1089404.366682634553187635",
+      "reserveETH": "139105.407659452384607498",
+      "reserveUSD": "49091076.8174514094725569447993495",
+      "trackedReserveETH": "139105.407659452384607498",
+      "price": {
+        "ETH": 0.1276894162661059,
+        "USD": 45.062309569163524
+      }
+    },
+    "balance": 1068310.1470085096,
+    "balanceETH": 136411.89906267438,
+    "balanceUSD": 48140522.560376056,
+    "balancePercent": 0.9806369238831314,
+    "rewards": {
+      "multiplier": 4.796,
+      "rewardPerBlock": 19.596306284219988,
+      "rewardPerThousand": 0.0004070646773649586,
+      "hourlyROI": 0.00013690465765970922
+    },
+    "history": {
+      "hourAgo": {
+        "balance": 1097301.2281894074,
+        "balanceUSD": 49498784.43105785,
+        "balanceETH": 140395.31716866267
+      },
+      "dayAgo": {
+        "balance": 1085278.333302078,
+        "balanceUSD": 50892310.13489739,
+        "balanceETH": 142565.72527900347
+      }
+    }
+  },
+  {
+    "id": 1,
+    "name": "Lua Party",
+    "icon": "\ud83c\udf63",
+    "company": "LuaSwap",
+    "swapId": "LUA-TOMOE SLP",
+    "swapPair": {
+      "id": "0x795065dcc9f64b5614c407a6efdc400da6221fb0",
+      "name": "LUA/TOMOE",
+      "token0": {
+        "id": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+        "symbol": "LUA",
+        "decimal": 18
+      },
+      "token1": {
+        "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "symbol": "TOMOE",
+        "decimal": 18
+      },
+      "reserve0": "19491118.735987406174229491",
+      "reserve1": "69552.703829726192303749",
+      "totalSupply": "1089404.366682634553187635",
+      "reserveETH": "139105.407659452384607498",
+      "reserveUSD": "49091076.8174514094725569447993495",
+      "trackedReserveETH": "139105.407659452384607498",
+      "price": {
+        "ETH": 0.1276894162661059,
+        "USD": 45.062309569163524
+      }
+    },
+    "balance": 1068310.1470085096,
+    "balanceETH": 136411.89906267438,
+    "balanceUSD": 48140522.560376056,
+    "balancePercent": 0.9806369238831314,
+    "rewards": {
+      "multiplier": 4.796,
+      "rewardPerBlock": 19.596306284219988,
+      "rewardPerThousand": 0.0004070646773649586,
+      "hourlyROI": 0.00013690465765970922
+    },
+    "history": {
+      "hourAgo": {
+        "balance": 1097301.2281894074,
+        "balanceUSD": 49498784.43105785,
+        "balanceETH": 140395.31716866267
+      },
+      "dayAgo": {
+        "balance": 1085278.333302078,
+        "balanceUSD": 50892310.13489739,
+        "balanceETH": 142565.72527900347
+      }
+    }
+  },
+  {
+    "id": 2,
+    "name": "Lua Party",
+    "icon": "\ud83c\udf63",
+    "company": "LuaSwap",
+    "swapId": "LUA-TOMOE SLP",
+    "swapPair": {
+      "id": "0x795065dcc9f64b5614c407a6efdc400da6221fb0",
+      "name": "LUA/TOMOE",
+      "token0": {
+        "id": "0x6b3595068778dd592e39a122f4f5a5cf09c90fe2",
+        "symbol": "LUA",
+        "decimal": 18
+      },
+      "token1": {
+        "id": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "symbol": "TOMOE",
+        "decimal": 18
+      },
+      "reserve0": "19491118.735987406174229491",
+      "reserve1": "69552.703829726192303749",
+      "totalSupply": "1089404.366682634553187635",
+      "reserveETH": "139105.407659452384607498",
+      "reserveUSD": "49091076.8174514094725569447993495",
+      "trackedReserveETH": "139105.407659452384607498",
+      "price": {
+        "ETH": 0.1276894162661059,
+        "USD": 45.062309569163524
+      }
+    },
+    "balance": 1068310.1470085096,
+    "balanceETH": 136411.89906267438,
+    "balanceUSD": 48140522.560376056,
+    "balancePercent": 0.9806369238831314,
+    "rewards": {
+      "multiplier": 4.796,
+      "rewardPerBlock": 19.596306284219988,
+      "rewardPerThousand": 0.0004070646773649586,
+      "hourlyROI": 0.00013690465765970922
+    },
+    "history": {
+      "hourAgo": {
+        "balance": 1097301.2281894074,
+        "balanceUSD": 49498784.43105785,
+        "balanceETH": 140395.31716866267
+      },
+      "dayAgo": {
+        "balance": 1085278.333302078,
+        "balanceUSD": 50892310.13489739,
+        "balanceETH": 142565.72527900347
+      }
+    }
+  }
+]
