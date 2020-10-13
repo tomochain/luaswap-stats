@@ -1,30 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Navbar from "../components/Navbar";
 import { Box, Grid, Paper } from "@material-ui/core";
 import CommonStatistics from "../components/CommonStatistics";
 import PoolTable from "../components/PoolTable";
-import "../utils/tokenData";
 import Service from "../services";
+import { useDashboardData } from "../hooks/dashboard";
+import { EMPTY_TEXT } from "../constants/misc";
+// import "../utils/tokenData";
 
 const Dashboard = () => {
-  const [prices, setPrices] = useState({});
+  const { commonData, setCommonData, setPools } = useDashboardData();
+  const priceInterval = useRef(null);
 
   const handleRequestPrice = (token) => {
     return Service.getTokenPrice(token);
   };
 
-  useEffect(() => {
-    const reloadPrices = () => {
-      Promise.all([
-        handleRequestPrice("LUA"),
-        handleRequestPrice("USDC"),
-        handleRequestPrice("TOMOE"),
-        handleRequestPrice("ETH"),
-        handleRequestPrice("USDT"),
-        handleRequestPrice("FRONT"),
-        handleRequestPrice("SUSHI"),
-      ]).then(
-        ([
+  const reloadDashboardData = () => {
+    // Request token prices
+    Promise.all([
+      handleRequestPrice("LUA"),
+      handleRequestPrice("USDC"),
+      handleRequestPrice("TOMOE"),
+      handleRequestPrice("ETH"),
+      handleRequestPrice("USDT"),
+      handleRequestPrice("FRONT"),
+      handleRequestPrice("SUSHI"),
+      handleRequestPrice("SRM"),
+      handleRequestPrice("FTT"),
+      handleRequestPrice("KAI"),
+      handleRequestPrice("OM"),
+    ]).then(
+      ([
+        luaPrice,
+        usdcPrice,
+        tomoePrice,
+        ethPrice,
+        usdtPrice,
+        frontPrice,
+        sushiPrice,
+        srmPrice,
+        fttPrice,
+        kaiPrice,
+        omPrice,
+      ]) => {
+        setCommonData({
           luaPrice,
           usdcPrice,
           tomoePrice,
@@ -32,50 +52,63 @@ const Dashboard = () => {
           usdtPrice,
           frontPrice,
           sushiPrice,
-        ]) => {
-          setPrices({
-            luaPrice: luaPrice.usdPrice,
-            usdcPrice: usdcPrice.usdPrice,
-            tomoePrice: tomoePrice.usdPrice,
-            ethPrice: ethPrice.usdPrice,
-            usdtPrice: usdtPrice.usdPrice,
-            frontPrice: frontPrice.usdPrice,
-            sushiPrice: sushiPrice.usdPrice,
-          });
-        }
-      );
-    };
-    reloadPrices();
-    const priceInterval = setInterval(() => {
-      reloadPrices();
-    }, 1000);
+          srmPrice,
+          fttPrice,
+          kaiPrice,
+          omPrice,
+        });
+      }
+    );
 
-    return clearInterval(priceInterval);
+    // Request pool list
+    Service.getPools().then((newPools) => {
+      setPools(newPools);
+    });
+  };
+
+  useEffect(() => {
+    // Initialize common data
+    setCommonData({
+      luaPrice: EMPTY_TEXT,
+      usdcPrice: EMPTY_TEXT,
+      tomoePrice: EMPTY_TEXT,
+      ethPrice: EMPTY_TEXT,
+      usdtPrice: EMPTY_TEXT,
+      frontPrice: EMPTY_TEXT,
+      sushiPrice: EMPTY_TEXT,
+    });
+
+    // Set price request interval
+    reloadDashboardData();
+    priceInterval.current = setInterval(reloadDashboardData, 15000);
+
+    return () => clearInterval(priceInterval.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Box>
       <Grid container spacing={4}>
         <Grid item>
-          <Paper elevation={3}>{`LUA: $${prices.luaPrice}`}</Paper>
+          <Paper elevation={3}>{`LUA: $${commonData.luaPrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`USDC: $${prices.usdcPrice}`}</Paper>
+          <Paper elevation={3}>{`USDC: $${commonData.usdcPrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`TOMOE: $${prices.tomoePrice}`}</Paper>
+          <Paper elevation={3}>{`TOMOE: $${commonData.tomoePrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`ETH: $${prices.ethPrice}`}</Paper>
+          <Paper elevation={3}>{`ETH: $${commonData.ethPrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`USDT: $${prices.usdtPrice}`}</Paper>
+          <Paper elevation={3}>{`USDT: $${commonData.usdtPrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`FRONT: $${prices.frontPrice}`}</Paper>
+          <Paper elevation={3}>{`FRONT: $${commonData.frontPrice}`}</Paper>
         </Grid>
         <Grid item>
-          <Paper elevation={3}>{`SUSHI: $${prices.sushiPrice}`}</Paper>
+          <Paper elevation={3}>{`SUSHI: $${commonData.sushiPrice}`}</Paper>
         </Grid>
       </Grid>
       <Box mb={4}>

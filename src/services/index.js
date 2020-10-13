@@ -1,4 +1,5 @@
 import axios from "axios";
+import _get from "lodash.get";
 import API from "../constants/apis";
 
 const route = axios.create({
@@ -7,21 +8,34 @@ const route = axios.create({
 
 const getTokenPrice = (token, callback) => {
   if (["USDT", "USDC"].includes(token)) {
-    if (callback) {
-      return callback({
-        usdPrice: 1,
-      });
+    if (typeof callback === "function") {
+      return callback(1);
     }
-    return {
-      usdPrice: 1,
-    };
+    return 1;
   }
 
   return route
     .get(`${API.GET_PRICE}/${token}`)
     .then((res) => {
-      if (res.data) {
-        if (callback) {
+      if (_get(res, "data.usdPrice")) {
+        if (typeof callback === "function") {
+          return callback(res.data.usdPrice);
+        }
+        return res.data.usdPrice;
+      }
+    })
+    .catch((err) => {
+      console.error("[ERROR]:", err);
+      return 0;
+    });
+};
+
+const getPools = (callback) => {
+  return route
+    .get(API.GET_POOLS)
+    .then((res) => {
+      if (_get(res, "data")) {
+        if (typeof callback === "function") {
           return callback(res.data);
         }
         return res.data;
@@ -29,12 +43,29 @@ const getTokenPrice = (token, callback) => {
     })
     .catch((err) => {
       console.error("[ERROR]:", err);
-      return {
-        usdPrice: 0,
-      };
+      return [];
+    });
+};
+
+const getPoolDetails = (poolId, callback) => {
+  return route
+    .get(`${API.GET_POOLS}/${poolId}`)
+    .then((res) => {
+      if (_get(res, "data")) {
+        if (typeof callback === "function") {
+          return callback(res.data);
+        }
+        return res.data;
+      }
+    })
+    .catch((err) => {
+      console.error("[ERROR]:", err);
+      return {};
     });
 };
 
 export default {
   getTokenPrice,
+  getPools,
+  getPoolDetails,
 };
