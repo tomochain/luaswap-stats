@@ -1,116 +1,99 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
-import { Box, Grid, Paper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import _get from "lodash.get";
 import CommonStatistics from "../components/CommonStatistics";
 import PoolTable from "../components/PoolTable";
 import Service from "../services";
 import { useDashboardData } from "../hooks/dashboard";
-import { EMPTY_TEXT } from "../constants/misc";
+import { POOL_CONFIG, TOKEN_ADDRESS, TOKEN_ICON } from "../constants/tokens";
 // import "../utils/tokenData";
 
 const Dashboard = () => {
   const { commonData, setCommonData, setPools } = useDashboardData();
+  const [firstTime, setFirstTime] = useState(true);
   const priceInterval = useRef(null);
 
-  const handleRequestPrice = (token) => {
-    return Service.getTokenPrice(token);
-  };
-
-  const reloadDashboardData = () => {
-    // Request token prices
-    Promise.all([
-      handleRequestPrice("LUA"),
-      handleRequestPrice("USDC"),
-      handleRequestPrice("TOMOE"),
-      handleRequestPrice("ETH"),
-      handleRequestPrice("USDT"),
-      handleRequestPrice("FRONT"),
-      handleRequestPrice("SUSHI"),
-      handleRequestPrice("SRM"),
-      handleRequestPrice("FTT"),
-      handleRequestPrice("KAI"),
-      handleRequestPrice("OM"),
-    ]).then(
-      ([
-        luaPrice,
-        usdcPrice,
-        tomoePrice,
-        ethPrice,
-        usdtPrice,
-        frontPrice,
-        sushiPrice,
-        srmPrice,
-        fttPrice,
-        kaiPrice,
-        omPrice,
-      ]) => {
-        setCommonData({
-          luaPrice,
-          usdcPrice,
-          tomoePrice,
-          ethPrice,
-          usdtPrice,
-          frontPrice,
-          sushiPrice,
-          srmPrice,
-          fttPrice,
-          kaiPrice,
-          omPrice,
-        });
+  const reloadCommonData = () => {
+    Promise.all([Service.getTokenPrice("LUA"), Service.getTotalSupply()]).then(
+      ([luaPrice, totalSupply]) => {
+        setCommonData({ luaPrice, totalSupply });
       }
     );
+  };
 
+  const reloadDashboardData = (data) => {
     // Request pool list
-    Service.getPools().then((newPools) => {
-      setPools(newPools);
-    });
+    Service.getPools()
+      .then((newPools) => {
+        const stakedRequests = newPools.map((row) => {
+          const poolAddress = _get(
+            POOL_CONFIG.find((item) => item.pid === row.pid),
+            "poolAddress"
+          );
+
+          return Service.getTotalStaked(poolAddress);
+        });
+        const apyRequests = newPools.map((row) => {
+          return Service.getPoolAPY({
+            pid: row.pid,
+            luaPrice: data.luaPrice,
+            usdValue: row.usdValue,
+          });
+        });
+
+        return Promise.all([
+          Promise.all(stakedRequests),
+          Promise.all(apyRequests),
+        ]).then(([valueList, apyList]) => {
+          return newPools.map((row, rowIdx) => {
+            const rowConfig =
+              POOL_CONFIG.find((item) => item.pid === row.pid) || {};
+
+            return {
+              ...row,
+              ...rowConfig,
+              totalStaked: valueList[rowIdx],
+              apy: apyList[rowIdx],
+            };
+          });
+        });
+      })
+      .then((newPools) => {
+        const updatedPools = newPools.map((row) => ({
+          ...row,
+          token1Address: TOKEN_ADDRESS[row.token1Symbol] || "",
+          token2Address: TOKEN_ADDRESS[row.token2Symbol] || "",
+          token1Icon: TOKEN_ICON[row.token1Symbol] || "",
+          token2Icon: TOKEN_ICON[row.token2Symbol] || "",
+        }));
+        setPools(updatedPools);
+      });
   };
 
   useEffect(() => {
     // Initialize common data
-    setCommonData({
-      luaPrice: EMPTY_TEXT,
-      usdcPrice: EMPTY_TEXT,
-      tomoePrice: EMPTY_TEXT,
-      ethPrice: EMPTY_TEXT,
-      usdtPrice: EMPTY_TEXT,
-      frontPrice: EMPTY_TEXT,
-      sushiPrice: EMPTY_TEXT,
-    });
-
-    // Set price request interval
-    reloadDashboardData();
-    priceInterval.current = setInterval(reloadDashboardData, 15000);
+    reloadCommonData();
 
     return () => clearInterval(priceInterval.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (firstTime && commonData && commonData.luaPrice) {
+      setFirstTime(false);
+      reloadDashboardData(commonData);
+      // Set price request interval
+      priceInterval.current = setInterval(
+        () => reloadDashboardData(commonData),
+        60000
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [firstTime, commonData]);
+
   return (
     <Box>
-      <Grid container spacing={4}>
-        <Grid item>
-          <Paper elevation={3}>{`LUA: $${commonData.luaPrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`USDC: $${commonData.usdcPrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`TOMOE: $${commonData.tomoePrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`ETH: $${commonData.ethPrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`USDT: $${commonData.usdtPrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`FRONT: $${commonData.frontPrice}`}</Paper>
-        </Grid>
-        <Grid item>
-          <Paper elevation={3}>{`SUSHI: $${commonData.sushiPrice}`}</Paper>
-        </Grid>
-      </Grid>
       <Box mb={4}>
         <Navbar />
       </Box>

@@ -1,3 +1,5 @@
+import BigNumber from "bignumber.js";
+
 export const reduceFractionDigit = (number = "", digitAmount = 0) =>
   Number(number).toLocaleString(undefined, {
     minimumFractionDigits: 0,
@@ -20,4 +22,9 @@ export const reduceLongNumber = (number = 0) => {
   }
 
   return `${reduceFractionDigit(result, 2)}${unit}`;
+};
+
+export const bnToDecimals = (number, decimals = 18) => {
+  const numberInBN = new BigNumber(number);
+  return numberInBN.dividedBy(new BigNumber(10).pow(decimals)).toNumber();
 };

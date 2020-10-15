@@ -3,7 +3,6 @@ import {
   makeStyles,
   Typography,
   Box,
-  Chip,
   Table,
   TableHead,
   TableRow,
@@ -13,7 +12,8 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { useDashboardData } from "../hooks/dashboard.js";
-import { TOKEN_ADDRESS, TOKEN_ICON, POOL_CONFIG } from "../constants/tokens.js";
+import { reduceFractionDigit } from "../utils/number.js";
+import { ArrowRightAlt as ArrowRightAltIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
   chip: {
@@ -36,11 +36,18 @@ const useStyles = makeStyles(() => ({
   negative: {
     color: "red",
   },
+  iconSwapRight: {
+    animation: "swappingRight 5s linear infinite",
+  },
+  iconSwapLeft: {
+    animation: "swappingLeft 5s linear infinite",
+  },
 }));
 
-const TABLE_COL_WIDTH = ["10%", "35%", "35%", "20%"];
+const TABLE_COL_WIDTH = ["10%", "15%", "45%", "15%", "15%"];
 
 const PoolRow = ({ row }) => {
+  const commonData = useDashboardData((store) => store.commonData);
   const classes = useStyles();
 
   return (
@@ -52,6 +59,7 @@ const PoolRow = ({ row }) => {
               <img
                 alt={row.token1Symbol}
                 src={row.token1Icon}
+                className={classes.iconSwapRight}
                 style={{ margin: "0px 7px 0px 0px", width: 30, height: 30 }}
               />
             </Tooltip>
@@ -59,192 +67,90 @@ const PoolRow = ({ row }) => {
               <img
                 alt={row.token2Symbol}
                 src={row.token2Icon}
+                className={classes.iconSwapLeft}
                 style={{ margin: "0px 0px 0px 7px", width: 30, height: 30 }}
               />
             </Tooltip>
           </Box>
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Box display="flex" alignItems="center" mb={2}>
+        </TableCell>
+        <TableCell className={classes.tableCell}>
+          <Typography style={{ fontSize: 15, fontWeight: 600 }}>
+            {`${reduceFractionDigit(row.apy, 1)}%`}
+          </Typography>
+        </TableCell>
+        <TableCell className={classes.tableCell}>
+          <Box display="flex" alignItems="center" mb={1}>
+            <Tooltip title={row.token1Symbol}>
               <img
                 alt={row.token1Symbol}
                 src={row.token1Icon}
-                style={{ marginRight: 10, width: 30, height: 30 }}
+                style={{ marginRight: 5, width: 15, height: 15 }}
               />
-              {" - "}
+            </Tooltip>
+            <Typography style={{ fontSize: 13 }}>
+              {`${reduceFractionDigit(row.tokenAmount, 3)} ${
+                row.token1Symbol || ""
+              }`}
+            </Typography>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <Tooltip title={row.token2Symbol}>
               <img
                 alt={row.token2Symbol}
                 src={row.token2Icon}
-                style={{ marginLeft: 10, width: 30, height: 30 }}
+                style={{ marginRight: 5, width: 15, height: 15 }}
               />
-            </Box>
-            <Typography
-              component="span"
-              style={{ fontWeight: 600, fontSize: 18 }}
-            >
-              {row.name}
+            </Tooltip>
+            <Typography style={{ fontSize: 13 }}>
+              {`${reduceFractionDigit(row.token2Amount, 3)} ${
+                row.token2Symbol || ""
+              }`}
             </Typography>
-          </Box> */}
-        </TableCell>
-        <TableCell className={classes.tableCell}>
-          {/* <Box display="flex" alignItems="stretch">
-            <Typography style={{ fontSize: 15, fontWeight: 500 }}>
-              {`${reduceFractionDigit(row.balance, 4)} LP`}
-            </Typography>
-          </Box> */}
-        </TableCell>
-        <TableCell className={classes.tableCell}>
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box display="flex" alignItems="center">
-              <Typography style={{ marginRight: 10, fontSize: 16 }}>
-                {row.icon}
-              </Typography>
-              <Typography style={{ fontSize: 14 }}>
-                {`${reduceFractionDigit(row.swapPair.reserve0, 2)} ${
-                  row.swapPair.token0.symbol
-                }`}
-              </Typography>
-            </Box>
-            <Box display="flex" alignItems="center">
-              <Typography style={{ marginRight: 10, fontSize: 16 }}>
-                {row.icon}
-              </Typography>
-              <Typography style={{ fontSize: 14 }}>
-                {`${reduceFractionDigit(row.swapPair.reserve1, 2)} ${
-                  row.swapPair.token1.symbol
-                }`}
-              </Typography>
-            </Box>
-          </Box> */}
-        </TableCell>
-        <TableCell className={classes.tableCell}>
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
-          >
-            <Box display="flex" alignItems="baseline">
-              <Typography
-                component="span"
-                style={{ marginRight: 5, fontSize: 16 }}
-              >
-                {`$${reduceFractionDigit(row.balanceUSD)}`}
-              </Typography>
-              <Typography
-                component="span"
-                className={
-                  (balanceChangeRate > 0 && classes.positive) ||
-                  (balanceChangeRate < 0 && classes.negative) ||
-                  ""
-                }
-                style={{ fontSize: 14 }}
-              >
-                {`(${(balanceChangeRate > 0 && "+") || ""}${reduceFractionDigit(
-                  balanceChangeRate,
-                  1
-                )}%)`}
-              </Typography>
-            </Box>
-            <Typography
-              component="span"
-              style={{ color: "gray", fontSize: 14 }}
-            >
-              {`11,6% of total`}
-            </Typography>
-          </Box> */}
-        </TableCell>
-        <TableCell className={classes.tableCell}>
-          {/* <Box display="flex" alignItems="stretch" mb={1}>
-            <Box
-              display="flex"
-              justifyContent="center"
-              alignItems="center"
-              marginRight="10px"
-              width={40}
-              height={40}
-              border="1px solid"
-              borderColor="red"
-              borderRadius={5}
-              fontSize={20}
-            >
-              {row.icon}
-            </Box>
-            <Box
-              flexGrow={1}
-              display="flex"
-              flexDirection="column"
-              justifyContent="space-between"
-            >
-              <Typography style={{ fontSize: 15 }}>{"2.65"}</Typography>
-              <Typography style={{ color: "gray", fontSize: 14 }}>
-                {"LUA/day"}
-              </Typography>
-            </Box>
           </Box>
-          <Tooltip
-            title={
-              <>
-                <Typography style={{ fontSize: 15 }}>
-                  {`This pool receives ${reduceFractionDigit(
-                    row.rewards.multiplier,
-                    1
-                  )}x of the base reward.`}
-                </Typography>
-                <Typography style={{ fontSize: 15 }}>
-                  {`Shown yield already includes that.`}
-                </Typography>
-              </>
-            }
-          >
-            <Chip
-              label={`${reduceFractionDigit(
-                row.rewards.multiplier,
-                1
-              )}x Reward`}
-              onDelete={() => {}}
-              deleteIcon={<HelpIcon />}
-              size="small"
-              style={{
-                backgroundColor: "rgb(0,255,0,0.2)",
-                color: "green",
-                fontSize: 12,
-              }}
-            />
-          </Tooltip> */}
         </TableCell>
         <TableCell className={classes.tableCell}>
-          {/* <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="space-between"
+          <ArrowRightAltIcon />
+        </TableCell>
+        <TableCell className={classes.tableCell}>
+          <Typography
+            component="span"
+            style={{ fontSize: 15, fontWeight: 600 }}
           >
-            <Typography style={{ fontSize: 16 }}>
-              {`${reduceFractionDigit(
-                row.rewards.hourlyROI * 24 * 100,
-                2
-              )}% daily`}
+            {`$${reduceFractionDigit(row.totalStaked, 3)}`}
+          </Typography>
+          <Typography component="span" style={{ fontSize: 11 }}>
+            {` ${row.poolSymbol || ""}`}
+          </Typography>
+        </TableCell>
+        <TableCell className={classes.tableCell}>
+          <Typography style={{ marginBottom: 5, fontSize: 15 }}>
+            {`$${reduceFractionDigit(row.usdValue, 0)}`}
+          </Typography>
+          <Typography style={{ color: "grey", fontSize: 12 }}>
+            {`${reduceFractionDigit(
+              (row.usdValue / commonData.allStaked) * 100,
+              1
+            )}% of total`}
+          </Typography>
+        </TableCell>
+        <TableCell className={classes.tableCell}>
+          <Box mb={1}>
+            <Typography
+              component="span"
+              style={{ marginRight: 5, fontSize: 15, fontWeight: 600 }}
+            >
+              {reduceFractionDigit(row.newRewardPerBlock, 2)}
             </Typography>
-            <Typography style={{ color: "gray", fontSize: 14 }}>
-              {`${reduceFractionDigit(
-                row.rewards.hourlyROI * 720 * 100,
-                2
-              )}% monthly`}
+            <Typography component="span" style={{ fontSize: 11 }}>
+              {"LUA"}
             </Typography>
-            <Typography style={{ color: "gray", fontSize: 14 }}>
-              {`${reduceFractionDigit(
-                row.rewards.hourlyROI * 8760 * 100,
-                2
-              )}% yearly`}
-            </Typography>
-          </Box> */}
+          </Box>
+          <Typography style={{ fontSize: 11 }}>
+            {`~ $${reduceFractionDigit(
+              Number(row.newRewardPerBlock) * commonData.luaPrice,
+              2
+            )}`}
+          </Typography>
         </TableCell>
       </TableRow>
     )
@@ -252,23 +158,7 @@ const PoolRow = ({ row }) => {
 };
 
 const PoolTable = () => {
-  const pools = useDashboardData((store) => {
-    return store.pools.map((row) => {
-      let moreConfig = POOL_CONFIG.find((item) => item.pid === row.pid) || {};
-      moreConfig = {
-        ...moreConfig,
-        token1Address: TOKEN_ADDRESS[moreConfig.token1Symbol] || "",
-        token2Address: TOKEN_ADDRESS[moreConfig.token2Symbol] || "",
-        token1Icon: TOKEN_ICON[moreConfig.token1Symbol] || "",
-        token2Icon: TOKEN_ICON[moreConfig.token2Symbol] || "",
-      };
-
-      return {
-        ...row,
-        ...moreConfig,
-      };
-    });
-  });
+  const pools = useDashboardData((store) => store.pools);
   const classes = useStyles();
 
   return (
@@ -279,12 +169,6 @@ const PoolTable = () => {
       >
         {"LuaSwap/Farms"}
       </Typography>
-      <Box display="flex" alignItems="center" mb={4}>
-        <Chip size="small" label="YIELD PER $1,000" className={classes.chip} />
-        <Typography>
-          {"is amount of LUA rewarded per day for a $1,000 investment"}
-        </Typography>
-      </Box>
       <Paper elevation={2} style={{ overflowY: "auto" }}>
         <Table aria-label="Pool table">
           <TableHead>
@@ -293,18 +177,21 @@ const PoolTable = () => {
                 <Typography className={classes.tableHeader}>FARM</Typography>
               </TableCell>
               <TableCell width={TABLE_COL_WIDTH[1]}>
+                <Typography className={classes.tableHeader}>APY</Typography>
+              </TableCell>
+              <TableCell width={TABLE_COL_WIDTH[2]} colSpan={3}>
                 <Typography className={classes.tableHeader}>
                   TOTAL VALUE STAKED
                 </Typography>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[2]}>
+              <TableCell width={TABLE_COL_WIDTH[3]}>
                 <Box display="flex" alignItems="baseline">
                   <Typography className={classes.tableHeader}>
                     TOTAL VALUE LOCKED
                   </Typography>
                 </Box>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[3]}>
+              <TableCell width={TABLE_COL_WIDTH[4]}>
                 <Typography className={classes.tableHeader}>
                   REWARD / BLOCK
                 </Typography>

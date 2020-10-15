@@ -30,6 +30,7 @@ const Navbar = ({ location }) => {
         setTabValue(chosenTabId);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   return (

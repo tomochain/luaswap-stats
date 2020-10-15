@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import { ROUTE } from "../constants";
 import Dashboard from "./Dashboard";
 import DashboardProvider from "../contexts/dashboard";
+import "../styles/common.css";
 
 const Providers = ({ children }) => {
   return <DashboardProvider>{children}</DashboardProvider>;

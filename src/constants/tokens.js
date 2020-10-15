@@ -1,3 +1,5 @@
+export const NUMBER_BLOCKS_PER_YEAR = 2425000;
+
 export const TOKEN_ADDRESS = {
   LUA: "0xb1f66997a5760428d3a87d68b90bfe0ae64121cc",
   USDC: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
@@ -133,3 +135,6 @@ export const POOL_CONFIG = [
     token2Symbol: "OM",
   },
 ];
+
+export const LUA_MASTER_FARM_ADDRESS =
+  "0xb67D7a6644d9E191Cac4DA2B88D6817351C7fF62";

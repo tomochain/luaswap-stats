@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, createContext } from "react";
 
 export const DashboardContext = createContext({});
@@ -13,6 +13,18 @@ const DashboardProvider = ({ children }) => {
       ...newData,
     }));
   };
+
+  useEffect(() => {
+    if (pools.length > 0) {
+      let allStaked = 0;
+      pools.forEach((item) => {
+        allStaked += item.totalToken2Value;
+      });
+      mergeCommonData({
+        allStaked,
+      });
+    }
+  }, [pools]);
 
   return (
     <DashboardContext.Provider

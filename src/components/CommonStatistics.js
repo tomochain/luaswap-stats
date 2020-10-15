@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback } from "react";
 import {
   Grid,
   Paper,
@@ -8,18 +8,22 @@ import {
   Link,
 } from "@material-ui/core";
 import { reduceFractionDigit, reduceLongNumber } from "../utils/number";
-import mockData from "../mockData/common.json";
+import { useDashboardData } from "../hooks/dashboard";
+import { TOKEN_ICON } from "../constants/tokens";
+import totalLiquidityIcon from "../assets/images/total-liquidity.svg";
+import totalStakedIcon from "../assets/images/total-staked.svg";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     borderRadius: 10,
     padding: 30,
   },
-  cardImg: {
+  cardPreview: {
     marginRight: 30,
     width: 80,
     height: 80,
     borderRadius: 8,
+    overflow: "hidden",
   },
   cardTitle: {
     fontSize: 18,
@@ -44,9 +48,17 @@ const useStyles = makeStyles(() => ({
   negative: {
     color: "red",
   },
+  primaryBg: {
+    backgroundColor: theme.palette.primary.main,
+  },
 }));
 
-const CardItem = ({ imgSrc, title, valueContainer, descriptionContainer }) => {
+const CardItem = ({
+  displayPreview,
+  title,
+  valueContainer,
+  descriptionContainer,
+}) => {
   const classes = useStyles();
 
   return (
@@ -54,20 +66,7 @@ const CardItem = ({ imgSrc, title, valueContainer, descriptionContainer }) => {
       <Paper elevation={2} className={classes.card}>
         <Box display="flex" alignItems="center">
           {/* <img src={imgSrc} alt={title} className={classes.cardImg} /> */}
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            marginRight="30px"
-            width={70}
-            height={70}
-            border="1px solid"
-            borderColor="blue"
-            borderRadius={8}
-            fontSize={32}
-          >
-            {"\ud83c\udf63"}
-          </Box>
+          <Box className={classes.cardPreview}>{displayPreview}</Box>
           <Grid
             container
             direction="column"
@@ -89,28 +88,41 @@ const CardItem = ({ imgSrc, title, valueContainer, descriptionContainer }) => {
 };
 
 const CommonStatistics = () => {
-  const [commonData, setCommonData] = useState({});
+  const { commonData, pools } = useDashboardData();
   const classes = useStyles();
 
   const handleCalculateStakeRate = (staked, liquidity) => {
-    return `${reduceFractionDigit((staked / liquidity) * 100, 1)}%`;
+    return `${reduceFractionDigit((staked / liquidity) * 100 || 0, 1)}%`;
   };
 
-  useEffect(() => {
-    setCommonData({
-      totalLiquidity: mockData.liquidity_amount,
-      liquidityChange24h: mockData.liquidity_change_24h,
-      totalStaked: mockData.staked_amount,
-      stakedChange24h: mockData.staked_change_24h,
-      luaPrice: mockData.lua_price,
-      luaMarketCap: mockData.lua_market_cap,
+  const getTotalStakedValue = useCallback(() => {
+    let result = 0;
+    pools.forEach((item) => {
+      result += item.usdValue;
     });
-  }, []);
+
+    return result;
+  }, [pools]);
 
   return (
     <Grid container spacing={3} style={{ width: "100%", margin: 0 }}>
       <CardItem
-        imgSrc="\ud83c\udf63"
+        displayPreview={
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+            className={classes.primaryBg}
+          >
+            <img
+              alt=""
+              src={totalLiquidityIcon}
+              style={{ width: 40, height: 40 }}
+            />
+          </Box>
+        }
         title="Liquidity (USD)"
         valueContainer={
           <Box display="flex" alignItems="center">
@@ -142,25 +154,27 @@ const CommonStatistics = () => {
         }
       />
       <CardItem
-        imgSrc="\ud83c\udf63"
+        displayPreview={
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            width="100%"
+            height="100%"
+            className={classes.primaryBg}
+          >
+            <img
+              alt=""
+              src={totalStakedIcon}
+              style={{ width: 40, height: 40 }}
+            />
+          </Box>
+        }
         title="Total Value Staked (USD)"
         valueContainer={
           <Box display="flex" alignItems="center">
             <Typography className={classes.cardValue}>
-              {`$${reduceFractionDigit(commonData.totalStaked)}`}
-            </Typography>
-            <Typography
-              className={`${classes.cardPercent} ${
-                (commonData.liquidityChange24h > 0 && classes.positive) ||
-                (commonData.liquidityChange24h < 0 && classes.negative) ||
-                ""
-              }`}
-            >
-              {`${
-                (commonData.stakedChange24h > 0 && "+") ||
-                (commonData.stakedChange24h < 0 && "-") ||
-                ""
-              }${reduceFractionDigit(commonData.stakedChange24h, 1) || "0.0"}%`}
+              {`$${reduceFractionDigit(getTotalStakedValue())}`}
             </Typography>
           </Box>
         }
@@ -170,18 +184,24 @@ const CommonStatistics = () => {
         )} of Liquidity`}
       />
       <CardItem
-        imgSrc="\ud83c\udf63"
+        displayPreview={
+          <img
+            alt="LUA"
+            src={TOKEN_ICON.LUA}
+            style={{ width: "100%", height: "100%" }}
+          />
+        }
         title="The LUA Token"
         valueContainer={
           <Box display="flex" alignItems="center">
             <Typography className={classes.cardValue}>
-              {`$${reduceFractionDigit(commonData.luaPrice, 2)}`}
+              {`$${reduceFractionDigit(commonData.luaPrice, 3)}`}
             </Typography>
           </Box>
         }
-        descriptionContainer={`Market Cap / $${reduceLongNumber(
-          commonData.luaMarketCap
-        )}`}
+        descriptionContainer={`Total Supply: ${reduceLongNumber(
+          commonData.totalSupply
+        )} LUA`}
       />
     </Grid>
   );
