@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
-import { Box } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import _get from "lodash.get";
 import CommonStatistics from "../components/CommonStatistics";
 import PoolTable from "../components/PoolTable";
@@ -9,10 +9,17 @@ import { useDashboardData } from "../hooks/dashboard";
 import { POOL_CONFIG, TOKEN_ADDRESS, TOKEN_ICON } from "../constants/tokens";
 // import "../utils/tokenData";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+}));
+
 const Dashboard = () => {
   const { commonData, setCommonData, setPools } = useDashboardData();
   const [firstTime, setFirstTime] = useState(true);
   const priceInterval = useRef(null);
+  const classes = useStyles();
 
   const reloadCommonData = () => {
     Promise.all([Service.getTokenPrice("LUA"), Service.getTotalSupply()]).then(
@@ -93,14 +100,12 @@ const Dashboard = () => {
   }, [firstTime, commonData]);
 
   return (
-    <Box>
-      <Box mb={4}>
-        <Navbar />
-      </Box>
-      <Box mb={4}>
+    <Box className={classes.root}>
+      <Navbar />
+      <Box mt={15} mb={4}>
         <CommonStatistics />
       </Box>
-      <Box mb={4}>
+      <Box mb={4} p={2} width="calc(100% - 32px)">
         <PoolTable />
       </Box>
     </Box>

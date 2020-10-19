@@ -15,8 +15,10 @@ import totalStakedIcon from "../assets/images/total-staked.svg";
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    borderRadius: 10,
     padding: 30,
+    borderRadius: 10,
+    backgroundColor: theme.palette.secondary.light,
+    color: "white",
   },
   cardPreview: {
     marginRight: 30,
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardValue: {
     marginRight: 10,
+    color: theme.palette.primary.main,
     fontSize: 24,
     fontWeight: "bolder",
   },
@@ -129,7 +132,7 @@ const CommonStatistics = () => {
             <Typography className={classes.cardValue}>
               {`$${reduceFractionDigit(commonData.totalLiquidity)}`}
             </Typography>
-            <Typography
+            {/* <Typography
               className={`${classes.cardPercent} ${
                 (commonData.liquidityChange24h > 0 && classes.positive) ||
                 (commonData.liquidityChange24h < 0 && classes.negative) ||
@@ -143,7 +146,7 @@ const CommonStatistics = () => {
               }${
                 reduceFractionDigit(commonData.liquidityChange24h, 1) || "0.0"
               }%`}
-            </Typography>
+            </Typography> */}
           </Box>
         }
         descriptionContainer={

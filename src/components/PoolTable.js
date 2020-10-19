@@ -10,25 +10,32 @@ import {
   TableBody,
   Paper,
   Tooltip,
+  TableContainer,
 } from "@material-ui/core";
 import { useDashboardData } from "../hooks/dashboard.js";
 import { reduceFractionDigit } from "../utils/number.js";
 import { ArrowRightAlt as ArrowRightAltIcon } from "@material-ui/icons";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: 5,
   },
+  table: {
+    backgroundColor: theme.palette.secondary.light,
+  },
   tableHeader: {
     marginRight: 10,
-    color: "gray",
+    borderColor: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
+  },
+  tableHeaderText: {
     fontSize: 14,
     fontWeight: 600,
   },
   tableCell: {
-    // display: "flex",
-    // alignItems: "center",
     minHeight: 200,
+    borderColor: theme.palette.secondary.main,
+    color: "white",
   },
   positive: {
     color: "green",
@@ -45,6 +52,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const TABLE_COL_WIDTH = ["10%", "15%", "45%", "15%", "15%"];
+const TABLE_COL_MIN_WIDTH = [90, 100, 500, 110, 110];
 
 const PoolRow = ({ row }) => {
   const commonData = useDashboardData((store) => store.commonData);
@@ -52,7 +60,7 @@ const PoolRow = ({ row }) => {
 
   return (
     row && (
-      <TableRow>
+      <TableRow className={classes.tableRow}>
         <TableCell className={classes.tableCell}>
           <Box display="flex" alignItems="center">
             <Tooltip title={row.token1Symbol}>
@@ -167,32 +175,57 @@ const PoolTable = () => {
         variant="h4"
         style={{ marginBottom: 30, fontWeight: "bolder" }}
       >
-        {"LuaSwap/Farms"}
+        {"LuaSwap / Farms"}
       </Typography>
-      <Paper elevation={2} style={{ overflowY: "auto" }}>
-        <Table aria-label="Pool table">
+      <TableContainer component={Paper}>
+        <Table aria-label="Pool table" className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell width={TABLE_COL_WIDTH[0]}>
-                <Typography className={classes.tableHeader}>FARM</Typography>
+              <TableCell
+                width={TABLE_COL_WIDTH[0]}
+                style={{ minWidth: TABLE_COL_MIN_WIDTH[0] }}
+                className={classes.tableHeader}
+              >
+                <Typography className={classes.tableHeaderText}>
+                  FARM
+                </Typography>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[1]}>
-                <Typography className={classes.tableHeader}>APY</Typography>
+              <TableCell
+                width={TABLE_COL_WIDTH[1]}
+                style={{ minWidth: TABLE_COL_MIN_WIDTH[1] }}
+                className={classes.tableHeader}
+              >
+                <Typography className={classes.tableHeaderText}>
+                  APY
+                </Typography>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[2]} colSpan={3}>
-                <Typography className={classes.tableHeader}>
+              <TableCell
+                width={TABLE_COL_WIDTH[2]}
+                colSpan={3}
+                style={{ minWidth: TABLE_COL_MIN_WIDTH[2] }}
+                className={classes.tableHeader}
+              >
+                <Typography className={classes.tableHeaderText}>
                   TOTAL VALUE STAKED
                 </Typography>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[3]}>
+              <TableCell
+                width={TABLE_COL_WIDTH[3]}
+                style={{ minWidth: TABLE_COL_MIN_WIDTH[3] }}
+                className={classes.tableHeader}
+              >
                 <Box display="flex" alignItems="baseline">
-                  <Typography className={classes.tableHeader}>
+                  <Typography className={classes.tableHeaderText}>
                     TOTAL VALUE LOCKED
                   </Typography>
                 </Box>
               </TableCell>
-              <TableCell width={TABLE_COL_WIDTH[4]}>
-                <Typography className={classes.tableHeader}>
+              <TableCell
+                width={TABLE_COL_WIDTH[4]}
+                style={{ minWidth: TABLE_COL_MIN_WIDTH[4] }}
+                className={classes.tableHeader}
+              >
+                <Typography className={classes.tableHeaderText}>
                   REWARD / BLOCK
                 </Typography>
               </TableCell>
@@ -204,7 +237,7 @@ const PoolTable = () => {
             })}
           </TableBody>
         </Table>
-      </Paper>
+      </TableContainer>
     </>
   );
 };
