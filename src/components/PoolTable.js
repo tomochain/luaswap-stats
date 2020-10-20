@@ -11,6 +11,7 @@ import {
   Paper,
   Tooltip,
   TableContainer,
+  CircularProgress,
 } from "@material-ui/core";
 import { useDashboardData } from "../hooks/dashboard.js";
 import { reduceFractionDigit } from "../utils/number.js";
@@ -19,6 +20,9 @@ import { ArrowRightAlt as ArrowRightAltIcon } from "@material-ui/icons";
 const useStyles = makeStyles((theme) => ({
   chip: {
     marginRight: 5,
+  },
+  tableContainer: {
+    borderRadius: 8,
   },
   table: {
     backgroundColor: theme.palette.secondary.light,
@@ -53,6 +57,20 @@ const useStyles = makeStyles((theme) => ({
 
 const TABLE_COL_WIDTH = ["10%", "15%", "45%", "15%", "15%"];
 const TABLE_COL_MIN_WIDTH = [90, 100, 500, 110, 110];
+
+const LoadingRow = () => {
+  const classes = useStyles();
+
+  return (
+    <TableRow>
+      <TableCell colSpan={7} className={classes.tableCell}>
+        <Box display="flex" justifyContent="center" alignItems="center" p={3}>
+          <CircularProgress color="primary" size={70} thickness={3} />
+        </Box>
+      </TableCell>
+    </TableRow>
+  );
+};
 
 const PoolRow = ({ row }) => {
   const commonData = useDashboardData((store) => store.commonData);
@@ -124,7 +142,7 @@ const PoolRow = ({ row }) => {
             component="span"
             style={{ fontSize: 15, fontWeight: 600 }}
           >
-            {`$${reduceFractionDigit(row.totalStaked, 3)}`}
+            {`${reduceFractionDigit(row.totalStaked, 3)}`}
           </Typography>
           <Typography component="span" style={{ fontSize: 11 }}>
             {` ${row.poolSymbol || ""}`}
@@ -172,12 +190,16 @@ const PoolTable = () => {
   return (
     <>
       <Typography
-        variant="h4"
+        variant="h5"
         style={{ marginBottom: 30, fontWeight: "bolder" }}
       >
         {"LuaSwap / Farms"}
       </Typography>
-      <TableContainer component={Paper}>
+      <TableContainer
+        component={Paper}
+        elevation={2}
+        className={classes.tableContainer}
+      >
         <Table aria-label="Pool table" className={classes.table}>
           <TableHead>
             <TableRow>
@@ -195,9 +217,7 @@ const PoolTable = () => {
                 style={{ minWidth: TABLE_COL_MIN_WIDTH[1] }}
                 className={classes.tableHeader}
               >
-                <Typography className={classes.tableHeaderText}>
-                  APY
-                </Typography>
+                <Typography className={classes.tableHeaderText}>APY</Typography>
               </TableCell>
               <TableCell
                 width={TABLE_COL_WIDTH[2]}
@@ -232,9 +252,13 @@ const PoolTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {pools.map((row, rowIdx) => {
-              return <PoolRow key={rowIdx + 1} row={row} />;
-            })}
+            {pools.length > 0 ? (
+              pools.map((row, rowIdx) => {
+                return <PoolRow key={rowIdx + 1} row={row} />;
+              })
+            ) : (
+              <LoadingRow />
+            )}
           </TableBody>
         </Table>
       </TableContainer>
