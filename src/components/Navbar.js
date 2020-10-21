@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Navbar = ({ location }) => {
+const Navbar = ({ history, location }) => {
   const [tabValue, setTabValue] = useState(0);
   const classes = useStyles();
 
@@ -60,7 +60,12 @@ const Navbar = ({ location }) => {
   return (
     <AppBar position="fixed" className={classes.navbar}>
       <Toolbar>
-        <IconButton edge="start" color="inherit" aria-label="Go to Homepage">
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="Go to Homepage"
+          onClick={() => history.push(ROUTE.HOMEPAGE)}
+        >
           <img alt="Homepage" src={homepageIcon} width="auto" height={40} />
           <AssessmentIcon color="primary" className={classes.chartIcon} />
         </IconButton>
