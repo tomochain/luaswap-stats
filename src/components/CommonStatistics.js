@@ -68,7 +68,6 @@ const CardItem = ({
     <Grid item xs={12} md={6} lg={4}>
       <Paper elevation={2} className={classes.card}>
         <Box display="flex" alignItems="center">
-          {/* <img src={imgSrc} alt={title} className={classes.cardImg} /> */}
           <Box className={classes.cardPreview}>{displayPreview}</Box>
           <Grid
             container
@@ -109,7 +108,7 @@ const CommonStatistics = () => {
 
   return (
     <Grid container spacing={3} style={{ width: "100%", margin: 0 }}>
-      {/* <CardItem
+      <CardItem
         displayPreview={
           <Box
             display="flex"
@@ -132,7 +131,7 @@ const CommonStatistics = () => {
             <Typography className={classes.cardValue}>
               {`$${reduceFractionDigit(commonData.totalLiquidity)}`}
             </Typography>
-            <Typography
+            {/* <Typography
               className={`${classes.cardPercent} ${
                 (commonData.liquidityChange24h > 0 && classes.positive) ||
                 (commonData.liquidityChange24h < 0 && classes.negative) ||
@@ -146,16 +145,18 @@ const CommonStatistics = () => {
               }${
                 reduceFractionDigit(commonData.liquidityChange24h, 1) || "0.0"
               }%`}
-            </Typography>
+            </Typography> */}
           </Box>
         }
         descriptionContainer={
           <Box display="flex" alignItems="center">
             <span style={{ marginRight: 5 }}>{`See `}</span>
-            <Link href="luaswap.org">{"LuaSwap.org"}</Link>
+            <Link href="https://luaswap.org" target="_blank">
+              {"LuaSwap.org"}
+            </Link>
           </Box>
         }
-      /> */}
+      />
       <CardItem
         displayPreview={
           <Box
