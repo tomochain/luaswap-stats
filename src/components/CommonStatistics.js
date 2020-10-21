@@ -109,7 +109,7 @@ const CommonStatistics = () => {
 
   return (
     <Grid container spacing={3} style={{ width: "100%", margin: 0 }}>
-      <CardItem
+      {/* <CardItem
         displayPreview={
           <Box
             display="flex"
@@ -132,7 +132,7 @@ const CommonStatistics = () => {
             <Typography className={classes.cardValue}>
               {`$${reduceFractionDigit(commonData.totalLiquidity)}`}
             </Typography>
-            {/* <Typography
+            <Typography
               className={`${classes.cardPercent} ${
                 (commonData.liquidityChange24h > 0 && classes.positive) ||
                 (commonData.liquidityChange24h < 0 && classes.negative) ||
@@ -146,7 +146,7 @@ const CommonStatistics = () => {
               }${
                 reduceFractionDigit(commonData.liquidityChange24h, 1) || "0.0"
               }%`}
-            </Typography> */}
+            </Typography>
           </Box>
         }
         descriptionContainer={
@@ -155,7 +155,7 @@ const CommonStatistics = () => {
             <Link href="luaswap.org">{"LuaSwap.org"}</Link>
           </Box>
         }
-      />
+      /> */}
       <CardItem
         displayPreview={
           <Box
