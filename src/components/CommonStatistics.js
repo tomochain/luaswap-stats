@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -91,19 +91,27 @@ const CardItem = ({
 
 const CommonStatistics = () => {
   const { commonData, pools } = useDashboardData();
+  const [totalStaked, setTotalStaked] = useState(0);
+  const [totalLiquidity, setTotalLiquidity] = useState(0);
   const classes = useStyles();
 
   const handleCalculateStakeRate = (staked, liquidity) => {
     return `${reduceFractionDigit((staked / liquidity) * 100 || 0, 1)}%`;
   };
 
-  const getTotalStakedValue = useCallback(() => {
-    let result = 0;
-    pools.forEach((item) => {
-      result += item.usdValue;
-    });
+  useEffect(() => {
+    if (pools && pools.length > 0) {
+      let _totalStaked = 0;
+      let _totalLiquidity = 0;
 
-    return result;
+      pools.forEach((item) => {
+        _totalStaked += item.usdValue;
+        _totalLiquidity += item.totalLiquidity;
+      });
+
+      setTotalStaked(_totalStaked);
+      setTotalLiquidity(_totalLiquidity);
+    }
   }, [pools]);
 
   return (
@@ -129,7 +137,7 @@ const CommonStatistics = () => {
         valueContainer={
           <Box display="flex" alignItems="center">
             <Typography className={classes.cardValue}>
-              {`$${reduceFractionDigit(commonData.totalLiquidity)}`}
+              {`$${reduceFractionDigit(totalLiquidity)}`}
             </Typography>
             {/* <Typography
               className={`${classes.cardPercent} ${
@@ -178,13 +186,13 @@ const CommonStatistics = () => {
         valueContainer={
           <Box display="flex" alignItems="center">
             <Typography className={classes.cardValue}>
-              {`$${reduceFractionDigit(getTotalStakedValue())}`}
+              {`$${reduceFractionDigit(totalStaked)}`}
             </Typography>
           </Box>
         }
         descriptionContainer={`${handleCalculateStakeRate(
-          commonData.totalStaked,
-          commonData.totalLiquidity
+          totalStaked,
+          totalLiquidity
         )} of Liquidity`}
       />
       <CardItem

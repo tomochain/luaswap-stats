@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import Navbar from "../components/Navbar";
 import { Box, makeStyles } from "@material-ui/core";
 import _get from "lodash.get";
+import { Helmet } from "react-helmet";
+import Navbar from "../components/Navbar";
 import CommonStatistics from "../components/CommonStatistics";
 import PoolTable from "../components/PoolTable";
 import Service from "../services";
@@ -22,11 +23,53 @@ const Dashboard = () => {
   const classes = useStyles();
 
   const reloadCommonData = () => {
-    Promise.all([Service.getTokenPrice("LUA"), Service.getTotalSupply()]).then(
-      ([luaPrice, totalSupply]) => {
-        setCommonData({ luaPrice, totalSupply });
+    // Get token prices
+    Promise.all([
+      Service.getTokenPrice("LUA"),
+      Service.getTokenPrice("USDC"),
+      Service.getTokenPrice("TOMOE"),
+      Service.getTokenPrice("ETH"),
+      Service.getTokenPrice("USDT"),
+      Service.getTokenPrice("FRONT"),
+      Service.getTokenPrice("SUSHI"),
+      Service.getTokenPrice("SRM"),
+      Service.getTokenPrice("FTT"),
+      Service.getTokenPrice("KAI"),
+      Service.getTokenPrice("OM"),
+    ]).then(
+      ([
+        luaPrice,
+        usdcPrice,
+        tomoePrice,
+        ethPrice,
+        usdtPrice,
+        frontPrice,
+        sushiPrice,
+        srmPrice,
+        fttPrice,
+        kaiPrice,
+        omPrice,
+      ]) => {
+        setCommonData({
+          luaPrice,
+          usdcPrice,
+          tomoePrice,
+          ethPrice,
+          usdtPrice,
+          frontPrice,
+          sushiPrice,
+          srmPrice,
+          fttPrice,
+          kaiPrice,
+          omPrice,
+        });
       }
     );
+
+    // Get total supply
+    Service.getTotalSupply().then((totalSupply) => {
+      setCommonData({ totalSupply });
+    });
   };
 
   const reloadDashboardData = (data) => {
@@ -56,12 +99,26 @@ const Dashboard = () => {
           return newPools.map((row, rowIdx) => {
             const rowConfig =
               POOL_CONFIG.find((item) => item.pid === row.pid) || {};
+            const totalLiquidity =
+              _get(
+                commonData,
+                [`${_get(rowConfig, "token1Symbol", "").toLowerCase()}Price`],
+                0
+              ) *
+                row.tokenAmount +
+              _get(
+                commonData,
+                [`${_get(rowConfig, "token2Symbol", "").toLowerCase()}Price`],
+                0
+              ) *
+                row.token2Amount;
 
             return {
               ...row,
               ...rowConfig,
               totalStaked: valueList[rowIdx],
               apy: apyList[rowIdx],
+              totalLiquidity,
             };
           });
         });
@@ -100,15 +157,20 @@ const Dashboard = () => {
   }, [firstTime, commonData]);
 
   return (
-    <Box className={classes.root}>
-      <Navbar />
-      <Box mt={15} mb={4}>
-        <CommonStatistics />
+    <>
+      <Helmet>
+        <title>LuaSwap Dashboard</title>
+      </Helmet>
+      <Box className={classes.root}>
+        <Navbar />
+        <Box mt={15} mb={4}>
+          <CommonStatistics />
+        </Box>
+        <Box mb={4} p={2} width="calc(100% - 32px)">
+          <PoolTable />
+        </Box>
       </Box>
-      <Box mb={4} p={2} width="calc(100% - 32px)">
-        <PoolTable />
-      </Box>
-    </Box>
+    </>
   );
 };
 
