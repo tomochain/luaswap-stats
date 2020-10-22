@@ -159,14 +159,14 @@ const Dashboard = () => {
   return (
     <>
       <Helmet>
-        <title>LuaSwap Dashboard</title>
+        <title>LuaSwap Board</title>
       </Helmet>
       <Box className={classes.root}>
         <Navbar />
         <Box mt={15} mb={4}>
           <CommonStatistics />
         </Box>
-        <Box mb={4} p={2} width="calc(100% - 32px)">
+        <Box mb={4} p={2}>
           <PoolTable />
         </Box>
       </Box>
