@@ -12,6 +12,8 @@ export const TOKEN_ADDRESS = {
   FTT: "0x50d1c9771902476076ecfc8b2a83ad6b9355a4c9",
   KAI: "0xd9ec3ff1f8be459bb9369b4e79e9ebcf7141c093",
   OM: "0x2baecdf43734f22fd5c152db08e3c27233f0c7d2",
+  WBTC: "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599",
+  UNI: "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
 };
 
 export const TOKEN_ICON = {
@@ -27,6 +29,8 @@ export const TOKEN_ICON = {
   KAI:
     "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xD9Ec3ff1f8be459Bb9369b4E79e9Ebcf7141C093/logo.png",
   OM: "https://s2.coinmarketcap.com/static/img/coins/128x128/6536.png",
+  WBTC: "https://s2.coinmarketcap.com/static/img/coins/128x128/1.png",
+  UNI: "https://s2.coinmarketcap.com/static/img/coins/128x128/7083.png",
 };
 
 export const POOL_CONFIG = [
@@ -137,6 +141,33 @@ export const POOL_CONFIG = [
     poolSymbolShort: "LUA-OM",
     token1Symbol: "LUA",
     token2Symbol: "OM",
+  },
+  {
+    pid: 12,
+    name: "USDC - USDT",
+    poolAddress: "0x3041cbd36888becc7bbcbc0045e3b1f144466f5f",
+    poolSymbol: "USDC-USDT UNI-V2 LP",
+    poolSymbolShort: "USDC-USDT",
+    token1Symbol: "USDC",
+    token2Symbol: "USDT",
+  },
+  {
+    pid: 13,
+    name: "WBTC - USDC",
+    poolAddress: "0x004375dff511095cc5a197a54140a24efef3a416",
+    poolSymbol: "WBTC-USDC UNI-V2 LP",
+    poolSymbolShort: "WBTC-USDC",
+    token1Symbol: "WBTC",
+    token2Symbol: "USDC",
+  },
+  {
+    pid: 14,
+    name: "UNI - LUA",
+    poolAddress: "0xcc76dfae500422d30c2c77be2a8764dcff3735ba",
+    poolSymbol: "UNI-LUA UNI-V2 LP",
+    poolSymbolShort: "UNI-LUA",
+    token1Symbol: "UNI",
+    token2Symbol: "LUA",
   },
 ];
 

@@ -8,6 +8,7 @@ import PoolTable from "../components/PoolTable";
 import Service from "../services";
 import { useDashboardData } from "../hooks/dashboard";
 import { POOL_CONFIG, TOKEN_ADDRESS, TOKEN_ICON } from "../constants/tokens";
+import { setCacheCommon, setCachePools } from "../utils/storage";
 // import "../utils/tokenData";
 
 const useStyles = makeStyles((theme) => ({
@@ -50,7 +51,7 @@ const Dashboard = () => {
         kaiPrice,
         omPrice,
       ]) => {
-        setCommonData({
+        const newPrices = {
           luaPrice,
           usdcPrice,
           tomoePrice,
@@ -62,13 +63,18 @@ const Dashboard = () => {
           fttPrice,
           kaiPrice,
           omPrice,
-        });
+        };
+        setCommonData(newPrices);
+
+        // Cache common data
+        setCacheCommon(newPrices);
       }
     );
 
     // Get total supply
     Service.getTotalSupply().then((totalSupply) => {
       setCommonData({ totalSupply });
+      setCacheCommon({ totalSupply });
     });
   };
 
@@ -132,6 +138,9 @@ const Dashboard = () => {
           token2Icon: TOKEN_ICON[row.token2Symbol] || "",
         }));
         setPools(updatedPools);
+
+        // Cache pool list
+        setCachePools(updatedPools);
       });
   };
 

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useState, createContext } from "react";
+import { getCacheCommon, getCachePools } from "../utils/storage";
 
 export const DashboardContext = createContext({});
 
 const DashboardProvider = ({ children }) => {
-  const [commonData, setCommonData] = useState({});
-  const [pools, setPools] = useState([]);
+  const [commonData, setCommonData] = useState(getCacheCommon() || {});
+  const [pools, setPools] = useState(getCachePools() || []);
 
   const mergeCommonData = (newData) => {
     setCommonData((oldData) => ({

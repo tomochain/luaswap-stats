@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   makeStyles,
   Typography,
@@ -12,10 +12,17 @@ import {
   Tooltip,
   TableContainer,
   CircularProgress,
+  IconButton,
 } from "@material-ui/core";
+import {
+  ArrowRightAlt as ArrowRightAltIcon,
+  OpenInNew as OpenInNewIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  ArrowDropUp as ArrowDropUpIcon,
+} from "@material-ui/icons";
+import _orderBy from "lodash.orderby";
 import { useDashboardData } from "../hooks/dashboard.js";
 import { reduceFractionDigit } from "../utils/number.js";
-import { ArrowRightAlt as ArrowRightAltIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   chip: {
@@ -28,13 +35,18 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.light,
   },
   tableHeader: {
-    marginRight: 10,
     borderColor: theme.palette.secondary.main,
     color: theme.palette.primary.main,
+  },
+  sortable: {
+    cursor: "pointer",
   },
   tableHeaderText: {
     fontSize: 14,
     fontWeight: 600,
+  },
+  tableRow: {
+    cursor: "pointer",
   },
   tableCell: {
     minHeight: 200,
@@ -47,11 +59,23 @@ const useStyles = makeStyles((theme) => ({
   negative: {
     color: "red",
   },
-  iconSwapRight: {
-    animation: "swappingRight 5s linear infinite",
+  // iconSwapRight: {
+  //   animation: "swappingRight 5s linear infinite",
+  // },
+  // iconSwapLeft: {
+  //   animation: "swappingLeft 5s linear infinite",
+  // },
+  redirectBtn: {
+    alignSelf: "flex-start",
   },
-  iconSwapLeft: {
-    animation: "swappingLeft 5s linear infinite",
+  redirectIcon: {
+    width: 15,
+    height: 15,
+    color: theme.palette.primary.main,
+  },
+  sortIcon: {
+    marginLeft: 10,
+    fontSize: 20,
   },
 }));
 
@@ -76,6 +100,17 @@ const PoolRow = ({ row }) => {
   const commonData = useDashboardData((store) => store.commonData);
   const classes = useStyles();
 
+  const handleForwardToPool = ({ poolSymbol }, event) => {
+    event.preventDefault();
+    // const link = document.createElement("a");
+    // link.href = `https://luaswap.org/#/farms/${poolSymbol}`;
+    // link.target = "_blank";
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.remove(link);
+    window.open(`https://luaswap.org/#/farms/${poolSymbol}`, "_blank").focus();
+  };
+
   return (
     row && (
       <TableRow className={classes.tableRow}>
@@ -85,7 +120,7 @@ const PoolRow = ({ row }) => {
               <img
                 alt={row.token1Symbol}
                 src={row.token1Icon}
-                className={classes.iconSwapRight}
+                // className={classes.iconSwapRight}
                 style={{ margin: "0px 7px 0px 0px", width: 30, height: 30 }}
               />
             </Tooltip>
@@ -93,9 +128,17 @@ const PoolRow = ({ row }) => {
               <img
                 alt={row.token2Symbol}
                 src={row.token2Icon}
-                className={classes.iconSwapLeft}
+                // className={classes.iconSwapLeft}
                 style={{ margin: "0px 0px 0px 7px", width: 30, height: 30 }}
               />
+            </Tooltip>
+            <Tooltip title={`Open ${row.poolSymbolShort} farm`}>
+              <IconButton
+                onClick={(event) => handleForwardToPool(row, event)}
+                className={classes.redirectBtn}
+              >
+                <OpenInNewIcon className={classes.redirectIcon} />
+              </IconButton>
             </Tooltip>
           </Box>
         </TableCell>
@@ -184,8 +227,25 @@ const PoolRow = ({ row }) => {
 };
 
 const PoolTable = () => {
+  const [sortData, setSortData] = useState({});
   const pools = useDashboardData((store) => store.pools);
   const classes = useStyles();
+
+  const getSortedPools = (pools, sortData) => {
+    const sortingCols = Object.keys(sortData);
+
+    if (sortingCols.length) {
+      return _orderBy(pools, sortingCols, Object.values(sortData));
+    }
+
+    return pools;
+  };
+
+  const handleSort = (name) => {
+    setSortData((oldData) => ({
+      [name]: oldData[name] === "desc" ? "asc" : "desc",
+    }));
+  };
 
   return (
     <>
@@ -213,11 +273,22 @@ const PoolTable = () => {
                 </Typography>
               </TableCell>
               <TableCell
+                onClick={() => handleSort("apy")}
                 width={TABLE_COL_WIDTH[1]}
                 style={{ minWidth: TABLE_COL_MIN_WIDTH[1] }}
-                className={classes.tableHeader}
+                className={`${classes.tableHeader} ${classes.sortable}`}
               >
-                <Typography className={classes.tableHeaderText}>APY</Typography>
+                <Box display="flex" alignItems="center">
+                  <Typography className={classes.tableHeaderText}>
+                    APY
+                  </Typography>
+                  {sortData.apy &&
+                    (sortData.apy === "asc" ? (
+                      <ArrowDropDownIcon className={classes.sortIcon} />
+                    ) : (
+                      <ArrowDropUpIcon className={classes.sortIcon} />
+                    ))}
+                </Box>
               </TableCell>
               <TableCell
                 width={TABLE_COL_WIDTH[2]}
@@ -230,14 +301,21 @@ const PoolTable = () => {
                 </Typography>
               </TableCell>
               <TableCell
+                onClick={() => handleSort("usdValue")}
                 width={TABLE_COL_WIDTH[3]}
                 style={{ minWidth: TABLE_COL_MIN_WIDTH[3] }}
-                className={classes.tableHeader}
+                className={`${classes.tableHeader} ${classes.sortable}`}
               >
-                <Box display="flex" alignItems="baseline">
+                <Box display="flex" alignItems="center">
                   <Typography className={classes.tableHeaderText}>
                     TOTAL VALUE LOCKED
                   </Typography>
+                  {sortData.usdValue &&
+                    (sortData.usdValue === "asc" ? (
+                      <ArrowDropDownIcon className={classes.sortIcon} />
+                    ) : (
+                      <ArrowDropUpIcon className={classes.sortIcon} />
+                    ))}
                 </Box>
               </TableCell>
               <TableCell
@@ -253,7 +331,7 @@ const PoolTable = () => {
           </TableHead>
           <TableBody>
             {pools.length > 0 ? (
-              pools.map((row, rowIdx) => {
+              getSortedPools(pools, sortData).map((row, rowIdx) => {
                 return <PoolRow key={rowIdx + 1} row={row} />;
               })
             ) : (
