@@ -37,7 +37,7 @@ export const POOL_CONFIG = [
   {
     pid: 3,
     name: "LUA - USDC",
-    poolAddress: "0x25a17a5a907941aaf6d6d1c7aae9c9cc3a38680c",
+    poolAddress: "0x96258bb42779bf300cf69c9b5bd2ba5245cb4bc4",
     poolSymbol: "LUA-USDC UNI-V2 LP",
     poolSymbolShort: "LUA-USDC",
     token1Symbol: "LUA",
@@ -46,7 +46,7 @@ export const POOL_CONFIG = [
   {
     pid: 0,
     name: "TOMOE - ETH",
-    poolAddress: "0x5c89674c4ad1ccd10a29bcc9aabc303cd5f2da1d",
+    poolAddress: "0x7885e359a085372EbCF1ed6829402f149D02c600",
     poolSymbol: "TOMOE-ETH UNI-V2 LP",
     poolSymbolShort: "TOMOE-ETH",
     token1Symbol: "TOMOE",
@@ -55,7 +55,7 @@ export const POOL_CONFIG = [
   {
     pid: 1,
     name: "TOMOE - USDT",
-    poolAddress: "0xcad93baf5cc5ebfe7f8a485828f0c0ecd2d0e9b8",
+    poolAddress: "0xbFFD9FF55685A3B6940C59DCDCc69b1737363BE0",
     poolSymbol: "TOMOE-USDT UNI-V2 LP",
     poolSymbolShort: "TOMOE-USDT",
     token1Symbol: "TOMOE",
@@ -64,7 +64,7 @@ export const POOL_CONFIG = [
   {
     pid: 2,
     name: "TOMOE - USDC",
-    poolAddress: "0xf3279a15f5361285100474db389f7d78848bb8d1",
+    poolAddress: "0xB10C1840f562f0ac914DA2bad3290833C75fdddF",
     poolSymbol: "TOMOE-USDC UNI-V2 LP",
     poolSymbolShort: "TOMOE-USDC",
     token1Symbol: "TOMOE",
@@ -73,7 +73,7 @@ export const POOL_CONFIG = [
   {
     pid: 4,
     name: "LUA - TOMOE",
-    poolAddress: "0x9ccc3e17ae1d1438bacde4d906cdc56bb6937e46",
+    poolAddress: "0xE2f4cC0198150a7beA98E0a2A66fecafC30a5cD0",
     poolSymbol: "LUA-TOMOE UNI-V2 LP",
     poolSymbolShort: "LUA-TOMOE",
     token1Symbol: "LUA",
@@ -82,7 +82,7 @@ export const POOL_CONFIG = [
   {
     pid: 5,
     name: "LUA - FRONT",
-    poolAddress: "0x5c47016e8a4a3c6a7c46a765f81dce205d00393e",
+    poolAddress: "0x97e1081c5DECB27606dbcDEA9d8E615757aB11c4",
     poolSymbol: "LUA-FRONT UNI-V2 LP",
     poolSymbolShort: "LUA-FRONT",
     token1Symbol: "LUA",
@@ -91,7 +91,7 @@ export const POOL_CONFIG = [
   {
     pid: 6,
     name: "LUA - SUSHI",
-    poolAddress: "0xfe1ead71b27e8389d819ee0a420080d90a60132c",
+    poolAddress: "0xc9a72CC23f900b381FC6355afD8ee674B1F12DF6",
     poolSymbol: "LUA-SUSHI UNI-V2 LP",
     poolSymbolShort: "LUA-SUSHI",
     token1Symbol: "LUA",
@@ -100,7 +100,7 @@ export const POOL_CONFIG = [
   {
     pid: 7,
     name: "LUA - SRM",
-    poolAddress: "0x694ad474ef16a8eefb5cc3119f9956aeef28c987",
+    poolAddress: "0x26Da27Cd29D75BcD925665223B4416025450d756",
     poolSymbol: "LUA-SRM UNI-V2 LP",
     poolSymbolShort: "LUA-SRM",
     token1Symbol: "LUA",
@@ -109,7 +109,7 @@ export const POOL_CONFIG = [
   {
     pid: 8,
     name: "LUA - FTT",
-    poolAddress: "0xf0ec5e8ea37911dec8e8e9bc940e9dba2de60706",
+    poolAddress: "0x38F9307839A8E82b071EA6Fcbef029814Ed88fcb",
     poolSymbol: "LUA-FTT UNI-V2 LP",
     poolSymbolShort: "LUA-FTT",
     token1Symbol: "LUA",
@@ -118,7 +118,7 @@ export const POOL_CONFIG = [
   {
     pid: 9,
     name: "LUA - ETH",
-    poolAddress: "0xc5d3c66133a6264b0f2e712b8e10ef96efb93eb2",
+    poolAddress: "0x65FaBAF7e6c5380243E063D8559d84e589Db6438",
     poolSymbol: "LUA-ETH UNI-V2 LP",
     poolSymbolShort: "LUA-ETH",
     token1Symbol: "LUA",
@@ -127,7 +127,7 @@ export const POOL_CONFIG = [
   {
     pid: 10,
     name: "LUA - KAI",
-    poolAddress: "0x9af4fb969bb16038d7618df8adbdb2e7133b0f66",
+    poolAddress: "0xeAAc91B4B28b97236605B1D40178D83C273dbe80",
     poolSymbol: "LUA-KAI UNI-V2 LP",
     poolSymbolShort: "LUA-KAI",
     token1Symbol: "LUA",
@@ -136,7 +136,7 @@ export const POOL_CONFIG = [
   {
     pid: 11,
     name: "LUA - OM",
-    poolAddress: "0x9ccb79d6523152aee4dc2be5822fdbafd0d63211",
+    poolAddress: "0xfa1B8F29D9505d18b22F823B82E7Da886Dfc8bdf",
     poolSymbol: "LUA-OM UNI-V2 LP",
     poolSymbolShort: "LUA-OM",
     token1Symbol: "LUA",
@@ -145,7 +145,7 @@ export const POOL_CONFIG = [
   {
     pid: 12,
     name: "USDC - USDT",
-    poolAddress: "0x3041cbd36888becc7bbcbc0045e3b1f144466f5f",
+    poolAddress: "0xB3558F47Fa914F7ec1dA1a6F52aB41eE63E81301",
     poolSymbol: "USDC-USDT UNI-V2 LP",
     poolSymbolShort: "USDC-USDT",
     token1Symbol: "USDC",
@@ -154,7 +154,7 @@ export const POOL_CONFIG = [
   {
     pid: 13,
     name: "WBTC - USDC",
-    poolAddress: "0x004375dff511095cc5a197a54140a24efef3a416",
+    poolAddress: "0x66E10dEa0019dC7353D2e4106E9b84f1CFc17CBa",
     poolSymbol: "WBTC-USDC UNI-V2 LP",
     poolSymbolShort: "WBTC-USDC",
     token1Symbol: "WBTC",
@@ -163,7 +163,7 @@ export const POOL_CONFIG = [
   {
     pid: 14,
     name: "UNI - LUA",
-    poolAddress: "0xcc76dfae500422d30c2c77be2a8764dcff3735ba",
+    poolAddress: "0xb195325642431b6aA6CD3C646591e7825BB3F90c",
     poolSymbol: "UNI-LUA UNI-V2 LP",
     poolSymbolShort: "UNI-LUA",
     token1Symbol: "UNI",
