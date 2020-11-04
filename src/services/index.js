@@ -12,6 +12,9 @@ import BigNumber from "bignumber.js";
 const route = axios.create({
   baseURL: "https://wallet.tomochain.com/api/luaswap",
 });
+const graphRoute = axios.create({
+  baseURL: "https://api.thegraph.com/subgraphs/name/phucngh/luaswap",
+});
 
 const getTokenPrice = (token, callback) => {
   if (["USDT", "USDC"].includes(token)) {
@@ -125,7 +128,7 @@ const getTotalStaked = (lpAddress, callback) => {
 
 const getPoolAPY = ({ pid, luaPrice, usdValue }, callback) => {
   const method = "getNewRewardPerBlock(uint256):(uint256)";
-  const params = [pid];
+  const params = [pid + 1];
   const cache = true;
 
   return route
@@ -155,6 +158,37 @@ const getPoolAPY = ({ pid, luaPrice, usdValue }, callback) => {
     });
 };
 
+const getTotalLiquidityData = (callback) => {
+  const operationName = "transactions";
+  const query =
+    "query transactions { uniswapFactories(first: 100) { id totalLiquidityUSD totalVolumeUSD } }";
+  const variables = {};
+
+  return graphRoute
+    .post("", {
+      operationName,
+      query,
+      variables,
+    })
+    .then((res) => {
+      const result = _get(res, "data.data.uniswapFactories", []).map(
+        (item) => ({
+          totalLiquidity: item.totalLiquidityUSD,
+          totalVolume: item.totalVolumeUSD,
+        })
+      )[0];
+
+      if (typeof callback === "function") {
+        return callback(result);
+      }
+      return result;
+    })
+    .catch((err) => {
+      console.error("[ERROR]:", err);
+      return {};
+    });
+};
+
 export default {
   getTokenPrice,
   getTotalSupply,
@@ -162,4 +196,5 @@ export default {
   getPoolDetails,
   getTotalStaked,
   getPoolAPY,
+  getTotalLiquidityData,
 };

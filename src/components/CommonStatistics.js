@@ -92,7 +92,6 @@ const CardItem = ({
 const CommonStatistics = () => {
   const { commonData, pools } = useDashboardData();
   const [totalStaked, setTotalStaked] = useState(0);
-  const [totalLiquidity, setTotalLiquidity] = useState(0);
   const classes = useStyles();
 
   const handleCalculateStakeRate = (staked, liquidity) => {
@@ -102,15 +101,12 @@ const CommonStatistics = () => {
   useEffect(() => {
     if (pools && pools.length > 0) {
       let _totalStaked = 0;
-      let _totalLiquidity = 0;
 
       pools.forEach((item) => {
         _totalStaked += item.usdValue;
-        _totalLiquidity += item.totalLiquidity;
       });
 
       setTotalStaked(_totalStaked);
-      setTotalLiquidity(_totalLiquidity);
     }
   }, [pools]);
 
@@ -137,23 +133,8 @@ const CommonStatistics = () => {
         valueContainer={
           <Box display="flex" alignItems="center">
             <Typography className={classes.cardValue}>
-              {`$${reduceFractionDigit(totalLiquidity)}`}
+              {`$${reduceFractionDigit(commonData.totalLiquidity)}`}
             </Typography>
-            {/* <Typography
-              className={`${classes.cardPercent} ${
-                (commonData.liquidityChange24h > 0 && classes.positive) ||
-                (commonData.liquidityChange24h < 0 && classes.negative) ||
-                ""
-              }`}
-            >
-              {`${
-                (commonData.liquidityChange24h > 0 && "+") ||
-                (commonData.liquidityChange24h < 0 && "-") ||
-                ""
-              }${
-                reduceFractionDigit(commonData.liquidityChange24h, 1) || "0.0"
-              }%`}
-            </Typography> */}
           </Box>
         }
         descriptionContainer={
@@ -192,7 +173,7 @@ const CommonStatistics = () => {
         }
         descriptionContainer={`${handleCalculateStakeRate(
           totalStaked,
-          totalLiquidity
+          commonData.totalLiquidity
         )} of Liquidity`}
       />
       <CardItem

@@ -12,11 +12,10 @@ import {
   Tooltip,
   TableContainer,
   CircularProgress,
-  IconButton,
+  Link,
 } from "@material-ui/core";
 import {
   ArrowRightAlt as ArrowRightAltIcon,
-  OpenInNew as OpenInNewIcon,
   ArrowDropDown as ArrowDropDownIcon,
   ArrowDropUp as ArrowDropUpIcon,
 } from "@material-ui/icons";
@@ -66,7 +65,9 @@ const useStyles = makeStyles((theme) => ({
   //   animation: "swappingLeft 5s linear infinite",
   // },
   redirectBtn: {
-    alignSelf: "flex-start",
+    marginLeft: 10,
+    fontSize: 12,
+    wordBreak: "keep-all",
   },
   redirectIcon: {
     width: 15,
@@ -79,8 +80,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TABLE_COL_WIDTH = ["10%", "15%", "45%", "15%", "15%"];
-const TABLE_COL_MIN_WIDTH = [90, 100, 500, 110, 110];
+const TABLE_COL_WIDTH = ["15%", "10%", "45%", "15%", "15%"];
+const TABLE_COL_MIN_WIDTH = [150, 70, 500, 100, 100];
 
 const LoadingRow = () => {
   const classes = useStyles();
@@ -120,31 +121,30 @@ const PoolRow = ({ row }) => {
               <img
                 alt={row.token1Symbol}
                 src={row.token1Icon}
-                // className={classes.iconSwapRight}
-                style={{ margin: "0px 7px 0px 0px", width: 30, height: 30 }}
+                style={{ margin: 0, width: 30, height: 30 }}
               />
             </Tooltip>
             <Tooltip title={row.token2Symbol}>
               <img
                 alt={row.token2Symbol}
                 src={row.token2Icon}
-                // className={classes.iconSwapLeft}
-                style={{ margin: "0px 0px 0px 7px", width: 30, height: 30 }}
+                style={{ marginLeft: -10, width: 30, height: 30 }}
               />
             </Tooltip>
             <Tooltip title={`Open ${row.poolSymbolShort} farm`}>
-              <IconButton
+              <Link
+                variant="nav"
                 onClick={(event) => handleForwardToPool(row, event)}
                 className={classes.redirectBtn}
               >
-                <OpenInNewIcon className={classes.redirectIcon} />
-              </IconButton>
+                {row.poolSymbolShort}
+              </Link>
             </Tooltip>
           </Box>
         </TableCell>
         <TableCell className={classes.tableCell}>
           <Typography style={{ fontSize: 15, fontWeight: 600 }}>
-            {`${reduceFractionDigit(row.apy, 1)}%`}
+            {`${reduceFractionDigit(row.apy, 2)}%`}
           </Typography>
         </TableCell>
         <TableCell className={classes.tableCell}>

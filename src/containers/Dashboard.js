@@ -76,6 +76,12 @@ const Dashboard = () => {
       setCommonData({ totalSupply });
       setCacheCommon({ totalSupply });
     });
+
+    // Get total liquidity
+    Service.getTotalLiquidityData().then((data) => {
+      setCommonData({ totalLiquidity: data.totalLiquidity });
+      setCacheCommon({ totalLiquidity: data.totalLiquidity });
+    });
   };
 
   const reloadDashboardData = (data) => {
@@ -105,26 +111,12 @@ const Dashboard = () => {
           return newPools.map((row, rowIdx) => {
             const rowConfig =
               POOL_CONFIG.find((item) => item.pid === row.pid) || {};
-            const totalLiquidity =
-              _get(
-                commonData,
-                [`${_get(rowConfig, "token1Symbol", "").toLowerCase()}Price`],
-                0
-              ) *
-                row.tokenAmount +
-              _get(
-                commonData,
-                [`${_get(rowConfig, "token2Symbol", "").toLowerCase()}Price`],
-                0
-              ) *
-                row.token2Amount;
 
             return {
               ...row,
               ...rowConfig,
               totalStaked: valueList[rowIdx],
               apy: apyList[rowIdx],
-              totalLiquidity,
             };
           });
         });
